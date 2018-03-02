@@ -5,6 +5,8 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += multimedia
+QT       += multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -22,17 +24,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+INCLUDEPATH += /usr/local/include/opencv \
+               /usr/local/include/opencv2
+
+LIBS += /usr/local/lib/libopencv_*
 
 SOURCES += \
         main.cpp \
         MainWidget.cpp \
     BusinessCard.cpp \
-    SignCard.cpp
+    SignCard.cpp \
+    OpencvCamera.cpp
 
 HEADERS += \
         MainWidget.h \
     BusinessCard.h \
-    SignCard.h
+    SignCard.h \
+    OpencvCamera.h
 
 FORMS += \
         MainWidget.ui \

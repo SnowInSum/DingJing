@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_MULTIMEDIAWIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../src/EnterpriseSign -I. -I../../Qt5.10.1/5.10.1/gcc_64/include -I../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets -I../../Qt5.10.1/5.10.1/gcc_64/include/QtGui -I../../Qt5.10.1/5.10.1/gcc_64/include/QtCore -I. -I/usr/include/libdrm -I. -I../../Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../src/EnterpriseSign -I. -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I../../Qt5.10.1/5.10.1/gcc_64/include -I../../Qt5.10.1/5.10.1/gcc_64/include/QtMultimediaWidgets -I../../Qt5.10.1/5.10.1/gcc_64/include/QtMultimedia -I../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets -I../../Qt5.10.1/5.10.1/gcc_64/include/QtGui -I../../Qt5.10.1/5.10.1/gcc_64/include/QtNetwork -I../../Qt5.10.1/5.10.1/gcc_64/include/QtCore -I. -I/usr/include/libdrm -I. -I../../Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/dingjing/Qt5.10.1/5.10.1/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -37,8 +37,8 @@ COMPRESS      = gzip -9f
 DISTNAME      = EnterpriseSign1.0.0
 DISTDIR = /home/dingjing/DingJing/bin/.tmp/EnterpriseSign1.0.0
 LINK          = g++
-LFLAGS        = -Wl,-rpath,/home/dingjing/Qt5.10.1/5.10.1/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/home/dingjing/Qt5.10.1/5.10.1/gcc_64/lib -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
+LFLAGS        = -Wl,-rpath,/home/dingjing/Qt5.10.1/5.10.1/gcc_64/lib -Wl,-rpath-link,/home/dingjing/Qt5.10.1/5.10.1/gcc_64/lib
+LIBS          = $(SUBLIBS) /usr/local/lib/libopencv_* -L/home/dingjing/Qt5.10.1/5.10.1/gcc_64/lib -lQt5MultimediaWidgets -lpulse-mainloop-glib -lpulse -lglib-2.0 -lQt5Multimedia -lQt5Widgets -lQt5Gui -lQt5Network -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -53,18 +53,22 @@ OBJECTS_DIR   = ./
 SOURCES       = ../src/EnterpriseSign/main.cpp \
 		../src/EnterpriseSign/MainWidget.cpp \
 		../src/EnterpriseSign/BusinessCard.cpp \
-		../src/EnterpriseSign/SignCard.cpp qrc_resources.cpp \
+		../src/EnterpriseSign/SignCard.cpp \
+		../src/EnterpriseSign/OpencvCamera.cpp qrc_resources.cpp \
 		moc_MainWidget.cpp \
 		moc_BusinessCard.cpp \
-		moc_SignCard.cpp
+		moc_SignCard.cpp \
+		moc_OpencvCamera.cpp
 OBJECTS       = main.o \
 		MainWidget.o \
 		BusinessCard.o \
 		SignCard.o \
+		OpencvCamera.o \
 		qrc_resources.o \
 		moc_MainWidget.o \
 		moc_BusinessCard.o \
-		moc_SignCard.o
+		moc_SignCard.o \
+		moc_OpencvCamera.o
 DIST          = ../Qt5.10.1/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../Qt5.10.1/5.10.1/gcc_64/mkspecs/common/unix.conf \
 		../Qt5.10.1/5.10.1/gcc_64/mkspecs/common/linux.conf \
@@ -250,10 +254,12 @@ DIST          = ../Qt5.10.1/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../Qt5.10.1/5.10.1/gcc_64/mkspecs/features/lex.prf \
 		../src/src/EnterpriseSign/EnterpriseSign.pro ../src/EnterpriseSign/MainWidget.h \
 		../src/EnterpriseSign/BusinessCard.h \
-		../src/EnterpriseSign/SignCard.h ../src/EnterpriseSign/main.cpp \
+		../src/EnterpriseSign/SignCard.h \
+		../src/EnterpriseSign/OpencvCamera.h ../src/EnterpriseSign/main.cpp \
 		../src/EnterpriseSign/MainWidget.cpp \
 		../src/EnterpriseSign/BusinessCard.cpp \
-		../src/EnterpriseSign/SignCard.cpp
+		../src/EnterpriseSign/SignCard.cpp \
+		../src/EnterpriseSign/OpencvCamera.cpp
 QMAKE_TARGET  = EnterpriseSign
 DESTDIR       = 
 TARGET        = EnterpriseSign
@@ -450,8 +456,11 @@ Makefile: ../src/EnterpriseSign/EnterpriseSign.pro ../../Qt5.10.1/5.10.1/gcc_64/
 		../../Qt5.10.1/5.10.1/gcc_64/mkspecs/features/lex.prf \
 		../src/EnterpriseSign/EnterpriseSign.pro \
 		../src/EnterpriseSign/resources.qrc \
+		../../Qt5.10.1/5.10.1/gcc_64/lib/libQt5MultimediaWidgets.prl \
+		../../Qt5.10.1/5.10.1/gcc_64/lib/libQt5Multimedia.prl \
 		../../Qt5.10.1/5.10.1/gcc_64/lib/libQt5Widgets.prl \
 		../../Qt5.10.1/5.10.1/gcc_64/lib/libQt5Gui.prl \
+		../../Qt5.10.1/5.10.1/gcc_64/lib/libQt5Network.prl \
 		../../Qt5.10.1/5.10.1/gcc_64/lib/libQt5Core.prl
 	$(QMAKE) -o Makefile ../src/EnterpriseSign/EnterpriseSign.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
 ../../Qt5.10.1/5.10.1/gcc_64/mkspecs/features/spec_pre.prf:
@@ -639,8 +648,11 @@ Makefile: ../src/EnterpriseSign/EnterpriseSign.pro ../../Qt5.10.1/5.10.1/gcc_64/
 ../../Qt5.10.1/5.10.1/gcc_64/mkspecs/features/lex.prf:
 ../src/EnterpriseSign/EnterpriseSign.pro:
 ../src/EnterpriseSign/resources.qrc:
+../../Qt5.10.1/5.10.1/gcc_64/lib/libQt5MultimediaWidgets.prl:
+../../Qt5.10.1/5.10.1/gcc_64/lib/libQt5Multimedia.prl:
 ../../Qt5.10.1/5.10.1/gcc_64/lib/libQt5Widgets.prl:
 ../../Qt5.10.1/5.10.1/gcc_64/lib/libQt5Gui.prl:
+../../Qt5.10.1/5.10.1/gcc_64/lib/libQt5Network.prl:
 ../../Qt5.10.1/5.10.1/gcc_64/lib/libQt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../src/EnterpriseSign/EnterpriseSign.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
@@ -658,8 +670,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../src/EnterpriseSign/resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../Qt5.10.1/5.10.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../src/EnterpriseSign/MainWidget.h ../src/EnterpriseSign/BusinessCard.h ../src/EnterpriseSign/SignCard.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../src/EnterpriseSign/main.cpp ../src/EnterpriseSign/MainWidget.cpp ../src/EnterpriseSign/BusinessCard.cpp ../src/EnterpriseSign/SignCard.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../src/EnterpriseSign/MainWidget.h ../src/EnterpriseSign/BusinessCard.h ../src/EnterpriseSign/SignCard.h ../src/EnterpriseSign/OpencvCamera.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../src/EnterpriseSign/main.cpp ../src/EnterpriseSign/MainWidget.cpp ../src/EnterpriseSign/BusinessCard.cpp ../src/EnterpriseSign/SignCard.cpp ../src/EnterpriseSign/OpencvCamera.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../src/EnterpriseSign/MainWidget.ui ../src/EnterpriseSign/BusinessCard.ui ../src/EnterpriseSign/SignCard.ui $(DISTDIR)/
 
 
@@ -700,9 +712,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: ../../Qt5.10.1/5.10.1/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h ../../Qt5.10.1/5.10.1/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_MainWidget.cpp moc_BusinessCard.cpp moc_SignCard.cpp
+compiler_moc_header_make_all: moc_MainWidget.cpp moc_BusinessCard.cpp moc_SignCard.cpp moc_OpencvCamera.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_MainWidget.cpp moc_BusinessCard.cpp moc_SignCard.cpp
+	-$(DEL_FILE) moc_MainWidget.cpp moc_BusinessCard.cpp moc_SignCard.cpp moc_OpencvCamera.cpp
 moc_MainWidget.cpp: ../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QWidget \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qwidget.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -806,6 +818,11 @@ moc_MainWidget.cpp: ../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QWidget \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qfiledevice.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qvector2d.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtouchdevice.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QTimer \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtimer.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbasictimer.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QDateTime \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatetime.h \
 		../src/EnterpriseSign/BusinessCard.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/QPaintEvent \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/QPainter \
@@ -816,7 +833,7 @@ moc_MainWidget.cpp: ../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QWidget \
 		../src/EnterpriseSign/MainWidget.h \
 		moc_predefs.h \
 		../../Qt5.10.1/5.10.1/gcc_64/bin/moc
-	/home/dingjing/Qt5.10.1/5.10.1/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++ -I/home/dingjing/DingJing/src/EnterpriseSign -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtWidgets -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtGui -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtCore -I. -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include-fixed -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++ -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/i686-w64-mingw32 -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/backward ../src/EnterpriseSign/MainWidget.h -o moc_MainWidget.cpp
+	/home/dingjing/Qt5.10.1/5.10.1/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++ -I/home/dingjing/DingJing/src/EnterpriseSign -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtMultimediaWidgets -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtMultimedia -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtWidgets -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtGui -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtCore -I. -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include-fixed -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++ -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/i686-w64-mingw32 -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/backward ../src/EnterpriseSign/MainWidget.h -o moc_MainWidget.cpp
 
 moc_BusinessCard.cpp: ../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QWidget \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qwidget.h \
@@ -929,7 +946,7 @@ moc_BusinessCard.cpp: ../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QWidget \
 		../src/EnterpriseSign/BusinessCard.h \
 		moc_predefs.h \
 		../../Qt5.10.1/5.10.1/gcc_64/bin/moc
-	/home/dingjing/Qt5.10.1/5.10.1/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++ -I/home/dingjing/DingJing/src/EnterpriseSign -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtWidgets -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtGui -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtCore -I. -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include-fixed -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++ -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/i686-w64-mingw32 -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/backward ../src/EnterpriseSign/BusinessCard.h -o moc_BusinessCard.cpp
+	/home/dingjing/Qt5.10.1/5.10.1/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++ -I/home/dingjing/DingJing/src/EnterpriseSign -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtMultimediaWidgets -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtMultimedia -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtWidgets -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtGui -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtCore -I. -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include-fixed -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++ -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/i686-w64-mingw32 -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/backward ../src/EnterpriseSign/BusinessCard.h -o moc_BusinessCard.cpp
 
 moc_SignCard.cpp: ../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QWidget \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qwidget.h \
@@ -1042,7 +1059,91 @@ moc_SignCard.cpp: ../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QWidget \
 		../src/EnterpriseSign/SignCard.h \
 		moc_predefs.h \
 		../../Qt5.10.1/5.10.1/gcc_64/bin/moc
-	/home/dingjing/Qt5.10.1/5.10.1/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++ -I/home/dingjing/DingJing/src/EnterpriseSign -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtWidgets -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtGui -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtCore -I. -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include-fixed -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++ -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/i686-w64-mingw32 -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/backward ../src/EnterpriseSign/SignCard.h -o moc_SignCard.cpp
+	/home/dingjing/Qt5.10.1/5.10.1/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++ -I/home/dingjing/DingJing/src/EnterpriseSign -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtMultimediaWidgets -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtMultimedia -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtWidgets -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtGui -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtCore -I. -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include-fixed -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++ -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/i686-w64-mingw32 -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/backward ../src/EnterpriseSign/SignCard.h -o moc_SignCard.cpp
+
+moc_OpencvCamera.cpp: ../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QObject \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobject.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qnamespace.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qglobal.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qconfig.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtcore-config.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsystemdetection.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qprocessordetection.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtypeinfo.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsysinfo.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlogging.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qflags.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbasicatomic.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qgenericatomic.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qglobalstatic.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmutex.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qnumeric.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstring.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qchar.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbytearray.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qrefcount.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qarraydata.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringview.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlist.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qiterator.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qpair.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringlist.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qregexp.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcoreevent.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qscopedpointer.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmetatype.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobject_impl.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/QImage \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qimage.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qcolor.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qrgb.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qrgba64.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpaintdevice.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qwindowdefs.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qrect.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsize.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpixelformat.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtransform.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qmatrix.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpolygon.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvector.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qregion.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qiodevice.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qline.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpainterpath.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QTimer \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtimer.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbasictimer.h \
+		/usr/local/include/opencv2/opencv.hpp \
+		/usr/local/include/opencv2/highgui.hpp \
+		../src/EnterpriseSign/OpencvCamera.h \
+		moc_predefs.h \
+		../../Qt5.10.1/5.10.1/gcc_64/bin/moc
+	/home/dingjing/Qt5.10.1/5.10.1/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/mkspecs/linux-g++ -I/home/dingjing/DingJing/src/EnterpriseSign -I/usr/local/include/opencv -I/usr/local/include/opencv2 -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtMultimediaWidgets -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtMultimedia -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtWidgets -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtGui -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtNetwork -I/home/dingjing/Qt5.10.1/5.10.1/gcc_64/include/QtCore -I. -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include-fixed -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++ -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/i686-w64-mingw32 -IC:/Qt/Qt5.10.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/backward ../src/EnterpriseSign/OpencvCamera.h -o moc_OpencvCamera.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1177,6 +1278,11 @@ main.o: ../src/EnterpriseSign/main.cpp ../src/EnterpriseSign/MainWidget.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qfiledevice.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qvector2d.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtouchdevice.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QTimer \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtimer.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbasictimer.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QDateTime \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatetime.h \
 		../src/EnterpriseSign/BusinessCard.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/QPaintEvent \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/QPainter \
@@ -1297,6 +1403,11 @@ MainWidget.o: ../src/EnterpriseSign/MainWidget.cpp ../src/EnterpriseSign/MainWid
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qfiledevice.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qvector2d.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtouchdevice.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QTimer \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtimer.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbasictimer.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QDateTime \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatetime.h \
 		../src/EnterpriseSign/BusinessCard.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/QPaintEvent \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/QPainter \
@@ -1305,6 +1416,43 @@ MainWidget.o: ../src/EnterpriseSign/MainWidget.cpp ../src/EnterpriseSign/MainWid
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpen.h \
 		../src/EnterpriseSign/SignCard.h \
 		ui_MainWidget.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QVariant \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QAction \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qaction.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qicon.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QApplication \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qapplication.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcoreapplication.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qeventloop.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qguiapplication.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qinputmethod.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QButtonGroup \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qbuttongroup.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QHeaderView \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qheaderview.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractitemview.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qframe.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qabstractitemmodel.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qitemselectionmodel.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qstyleoption.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qvalidator.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qregularexpression.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qslider.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractslider.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qstyle.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qtabbar.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qtabwidget.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qrubberband.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QLabel \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qlabel.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QPushButton \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qpushbutton.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractbutton.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MainWidget.o ../src/EnterpriseSign/MainWidget.cpp
 
@@ -1417,7 +1565,41 @@ BusinessCard.o: ../src/EnterpriseSign/BusinessCard.cpp ../src/EnterpriseSign/Bus
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpainter.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtextoption.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpen.h \
-		ui_BusinessCard.h
+		ui_BusinessCard.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QVariant \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QAction \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qaction.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qicon.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QApplication \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qapplication.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcoreapplication.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qeventloop.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qguiapplication.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qinputmethod.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QButtonGroup \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qbuttongroup.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QHeaderView \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qheaderview.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractitemview.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qframe.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qabstractitemmodel.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qitemselectionmodel.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qstyleoption.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qvalidator.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qregularexpression.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qslider.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractslider.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qstyle.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qtabbar.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qtabwidget.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qrubberband.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QLabel \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qlabel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BusinessCard.o ../src/EnterpriseSign/BusinessCard.cpp
 
 SignCard.o: ../src/EnterpriseSign/SignCard.cpp ../src/EnterpriseSign/SignCard.h \
@@ -1529,8 +1711,157 @@ SignCard.o: ../src/EnterpriseSign/SignCard.cpp ../src/EnterpriseSign/SignCard.h 
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpainter.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtextoption.h \
 		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpen.h \
-		ui_SignCard.h
+		ui_SignCard.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QVariant \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QAction \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qaction.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qicon.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QApplication \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qapplication.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcoreapplication.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qeventloop.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qguiapplication.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qinputmethod.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QButtonGroup \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qbuttongroup.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QHeaderView \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qheaderview.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractitemview.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qframe.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qabstractitemmodel.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qitemselectionmodel.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qstyleoption.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qvalidator.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qregularexpression.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qslider.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qabstractslider.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qstyle.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qtabbar.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qtabwidget.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qrubberband.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QLabel \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qlabel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SignCard.o ../src/EnterpriseSign/SignCard.cpp
+
+OpencvCamera.o: ../src/EnterpriseSign/OpencvCamera.cpp ../src/EnterpriseSign/OpencvCamera.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QObject \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobject.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobjectdefs.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qnamespace.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qglobal.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qconfig.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtcore-config.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsystemdetection.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qprocessordetection.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtypeinfo.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsysinfo.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlogging.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qflags.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbasicatomic.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qgenericatomic.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qglobalstatic.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmutex.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qnumeric.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qversiontagging.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstring.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qchar.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbytearray.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qrefcount.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qarraydata.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringliteral.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringview.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringbuilder.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlist.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qalgorithms.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qiterator.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qhashfunctions.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qpair.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbytearraylist.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringlist.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qregexp.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qstringmatcher.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcoreevent.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qscopedpointer.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmetatype.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qobject_impl.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/QImage \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qimage.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtguiglobal.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtgui-config.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qcolor.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qrgb.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qrgba64.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpaintdevice.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qwindowdefs.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qrect.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmargins.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsize.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qpoint.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpixelformat.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtransform.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qmatrix.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpolygon.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvector.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qregion.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdatastream.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qiodevice.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qline.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpainterpath.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/QTimer \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtimer.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qbasictimer.h \
+		/usr/local/include/opencv2/opencv.hpp \
+		/usr/local/include/opencv2/highgui.hpp \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/QMessageBox \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qmessagebox.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qdialog.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qwidget.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpalette.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qbrush.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qpixmap.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsharedpointer.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qshareddata.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qhash.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qfont.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qfontmetrics.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qfontinfo.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtWidgets/qsizepolicy.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qcursor.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qkeysequence.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qevent.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qvariant.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qmap.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qdebug.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qtextstream.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qlocale.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qset.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qurl.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qurlquery.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qfile.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtCore/qfiledevice.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qvector2d.h \
+		../../Qt5.10.1/5.10.1/gcc_64/include/QtGui/qtouchdevice.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o OpencvCamera.o ../src/EnterpriseSign/OpencvCamera.cpp
 
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
@@ -1543,6 +1874,9 @@ moc_BusinessCard.o: moc_BusinessCard.cpp
 
 moc_SignCard.o: moc_SignCard.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_SignCard.o moc_SignCard.cpp
+
+moc_OpencvCamera.o: moc_OpencvCamera.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_OpencvCamera.o moc_OpencvCamera.cpp
 
 ####### Install
 

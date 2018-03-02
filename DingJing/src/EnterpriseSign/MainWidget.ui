@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>MainWidget</string>
   </property>
-  <widget class="QLabel" name="logo">
+  <widget class="QLabel" name="LBlogo">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -34,7 +34,7 @@ color: rgb(239, 41, 41);
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="time">
+  <widget class="QLabel" name="LBtime">
    <property name="geometry">
     <rect>
      <x>730</x>
@@ -54,7 +54,7 @@ color: rgb(239, 41, 41);</string>
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="data">
+  <widget class="QLabel" name="LBdate">
    <property name="geometry">
     <rect>
      <x>740</x>
@@ -74,7 +74,7 @@ color: rgb(239, 41, 41);</string>
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="week">
+  <widget class="QLabel" name="LBweek">
    <property name="geometry">
     <rect>
      <x>910</x>
@@ -94,7 +94,7 @@ color: rgb(239, 41, 41);</string>
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="weather">
+  <widget class="QLabel" name="LBweather">
    <property name="geometry">
     <rect>
      <x>860</x>
@@ -114,7 +114,7 @@ color: rgb(239, 41, 41);</string>
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QPushButton" name="admin_login">
+  <widget class="QPushButton" name="BTadmin_login">
    <property name="geometry">
     <rect>
      <x>870</x>
@@ -127,7 +127,7 @@ color: rgb(239, 41, 41);</string>
     <string>set</string>
    </property>
   </widget>
-  <widget class="QLabel" name="oneState">
+  <widget class="QLabel" name="signOneState">
    <property name="geometry">
     <rect>
      <x>270</x>
@@ -144,7 +144,7 @@ color: rgb(239, 41, 41);</string>
     <string>one</string>
    </property>
   </widget>
-  <widget class="QLabel" name="twoState">
+  <widget class="QLabel" name="signTwoState">
    <property name="geometry">
     <rect>
      <x>270</x>
@@ -161,7 +161,7 @@ color: rgb(239, 41, 41);</string>
     <string>two</string>
    </property>
   </widget>
-  <widget class="QLabel" name="threeState">
+  <widget class="QLabel" name="signThreeState">
    <property name="geometry">
     <rect>
      <x>270</x>
@@ -178,7 +178,7 @@ color: rgb(239, 41, 41);</string>
     <string>three</string>
    </property>
   </widget>
-  <widget class="QLabel" name="signState">
+  <widget class="QLabel" name="signNowState">
    <property name="geometry">
     <rect>
      <x>460</x>
@@ -193,6 +193,22 @@ color: rgb(239, 41, 41);</string>
    </property>
    <property name="text">
     <string>sign</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="LBcamera">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>130</y>
+     <width>271</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(138, 226, 52);</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>
